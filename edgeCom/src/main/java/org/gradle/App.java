@@ -41,10 +41,4 @@ public class App {
         
         return sessionFactory.getObject();
     }
-    
-    @Bean
-    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws Exception {
-      final SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(sqlSessionFactory);
-      return sqlSessionTemplate;
-    }
 }
