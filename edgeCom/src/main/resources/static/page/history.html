@@ -1,0 +1,43 @@
+<style>
+	.table{
+	    margin: 15px 15px!important;
+	    width: calc(100% - 30px) !important;
+	}
+	li[data-page=next-limit]{
+		display:none !important;
+	}
+	li[data-page=prev-limit]{
+		display:none !important;
+	}
+	.condition-box{
+		padding: 0px 15px;
+	}
+	
+	select{
+		height:30px;
+		
+	}
+	input[type=button].btn-white{
+		height:30px;
+		border: 1px solid #000;
+	    background: #fff;
+	    width: 97px;
+	}
+	input[type=text]{
+		height:30px;
+	}
+	
+	
+</style>
+<div class="condition-box">
+<!-- 	<span>Site </span><site-select></site-select> -->
+<!-- 	<span style="margin-left:15px"></span> -->
+<!-- 	<span>Edge </span><edge-select></edge-select> -->
+<!-- 	<span style="margin-left:15px"></span> -->
+	<span>Date </span><input type="text" class="sDate"/>~<input type="text" class="eDate"/>
+	<span style="margin-left:15px"></span>
+<!-- 	<span>장치 </span><devicecode-select></devicecode-select> -->
+	<span style="margin-left:15px"></span>
+	<input type="button" class="search" value="검색"/>
+</div>
+<table class="table" data-paging="true"></table>

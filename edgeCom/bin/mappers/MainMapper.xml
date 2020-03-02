@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="org.gradle.mapper.MainMapper">
+ 	<select id="selectSiteList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select * from site
+    </select>
+    <select id="selectEdgeList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select * from edge
+    </select>
+    <select id="selectDeviceCodeList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select * from deviceCode
+    </select>
+    <select id="selectEventLog" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT
+			idx,
+			siteCode,
+			edgeCode,
+			devCode,
+			eventClass,
+			alarmName,
+			eventType,
+			critical,
+			value,
+			DATE_FORMAT(regdate,"%Y-%m-%d %H:%i:%S") as regdate,
+			procYn
+		FROM 
+			eventlog
+		WHERE 1=1
+			<if test='edgeCode neq null and siteCode neq "0"'>
+			AND siteCode=#{siteCode}
+			</if>
+			<if test='edgeCode neq null and edgeCode neq "" and edgeCode neq "0"'>
+			AND edgeCode=#{edgeCode}
+			</if>
+			<if test='deviceCode neq null and deviceCode neq "" and deviceCode neq "0"'>
+			AND devCode=#{devCode}
+			</if>
+			<if test='sDate neq null and sDate neq "" and eDate neq null and eDate neq ""'>
+			AND (DATE_FORMAT(regdate,"%Y-%m-%d")>=#{sDate} AND #{eDate}>=DATE_FORMAT(regdate,"%Y-%m-%d"))
+			</if>
+			<if test='procYn neq null and procYn neq ""'>
+			AND procYn=#{procYn}
+			</if>
+		ORDER BY regdate DESC
+		<if test='limit neq null and limit neq ""'>
+		LIMIT #{limit} OFFSET #{page}
+		</if>
+    </select>
+    
+    <insert id="insertValve" parameterType="java.util.HashMap">
+    	insert into controldata values (#{name},#{value});
+    </insert>
+   	<insert id="insertValveLog" parameterType="java.util.HashMap">
+		insert into controllog(siteCode,edgeCode,devCode,ctrValue,regdate) SELECT siteCode,edgeCode,#{name} AS devCode,#{value} AS ctrValue,now() FROM edge LIMIT 1
+    </insert>
+	<select id="selectValue" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select a.sensor,a.value,b.valve,b.status from controldata a join valveStatus b on a.sensor=b.valve;				
+	</select>
+   
+
+	 <select id="selectValve" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT * FROM valvestatus WHERE valve=#{value}
+	</select>
+	
+
+	<select id="selectCtrlYn" parameterType="java.util.HashMap" resultType="java.lang.String">
+		SELECT ctrlYn FROM edge LIMIT 1
+	</select>
+	
+	<select id="selectStatus" parameterType="java.util.HashMap" resultType="int">
+		SELECT status FROM edge LIMIT 1
+	</select>
+	
+	<update id="updateStatus" parameterType="java.util.HashMap">
+		UPDATE edge SET status=#{status} WHERE 1=1;
+	</update>
+	
+	<update id="updateEventLog" parameterType="java.util.HashMap">
+		UPDATE eventlog SET procYn='Y' WHERE idx=#{idx}
+	</update>
+
+    
+</mapper>

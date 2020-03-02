@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="org.gradle.mapper.PlcMapper">
+        
+    <select id="plc" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT
+			*
+		FROM
+			valuehistory
+		ORDER BY regdate DESC LIMIT 1
+    </select>
+	<select id="plcHistory" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+<!-- 		SELECT -->
+<!-- 			DATE(regdate) as date, -->
+<!-- 			HOUR(regdate) as hour, -->
+<!-- 			DATE_FORMAT(regdate,"%Y-%m-%d %H:%i:%S") as date, -->
+<!-- 			${columnCode} as value -->
+<!-- 		FROM -->
+<!-- 			valuehistory -->
+<!-- 		GROUP BY DATE(regdate),HOUR(regdate) ORDER BY regdate DESC LIMIT 24 -->
+		SELECT
+			DATE(regdate) as date,
+			HOUR(regdate) as hour,
+			MINUTE(regdate) as minute,
+			SECOND(regdate) as second,
+			DATE_FORMAT(regdate,"%Y-%m-%d %H:%i:%S") as date,
+			${columnCode} as value
+		FROM
+			valuehistory
+		ORDER BY regdate DESC LIMIT 1000
+    </select>
+    <select id="selectAiName" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT * FROM ainame
+	</select>
+    
+    
+    <select id="selectLastPlcHistory" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT * FROM valuehistory ORDER BY regdate DESC LIMIT 1	
+	</select>
+
+ 	<insert id="insertEventLog" parameterType="java.util.HashMap">
+		INSERT INTO eventlog(siteCode,edgeCode,devCode,eventClass,alarmName,eventType,critical,value,regDate)
+		select
+			'S01',
+			'E01',
+			#{devCode} as "deviceCode",
+			0 AS eventClass,
+			#{alarmName} AS alarmName,
+			'PLC' AS eventType,
+			#{status} AS Critical,
+			${devCodeValue} AS value,
+			NOW() AS regdate
+		FROM DUAL;
+    </insert>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="org.gradle.mapper.RcuMapper">
+        
+   
+	<select id="rcu" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<foreach collection="list" index="index" item="item" separator="union all">
+			(SELECT 
+				* 
+			FROM 
+				(SELECT * FROM rcuvaluehistory ORDER BY Regdate DESC LIMIT 100000) TB_A
+			WHERE (eki,dki,type)=(#{item.eki},#{item.dki},#{item.type}) 
+			ORDER BY Regdate DESC 
+			LIMIT 1)
+        </foreach>
+    </select>
+	<select id="rcuHistory" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT
+			DATE(regdate) as date,
+			HOUR(regdate) as hour,
+			MINUTE(regdate) as minute,
+			SECOND(regdate) as second,
+			DATE_FORMAT(regdate,"%Y-%m-%d %H:%i:%S") as date,
+			value
+		FROM
+			rcuvaluehistory
+		WHERE (eki,dki,type)=(#{eki},#{dki},#{type})
+		ORDER BY regdate DESC LIMIT 1000
+    </select>
+    
+    <select id="selectDeviceInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT * FROM deviceinfo
+	</select>
+ 	<select id="selectDeviceCode" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT * FROM devicecode
+	</select>
+</mapper>

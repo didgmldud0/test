@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="org.gradle.mapper.SimulMapper">
+        
+ 	<select id="selectControlData" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT * FROM controldata LIMIT 1
+	</select>
+	<delete id="deleteControlData" parameterType="java.util.HashMap">
+    	DELETE FROM controldata WHERE (sensor,value)=(#{sensor},#{value})
+    </delete>
+     <update id="updateValvestatus" parameterType="java.util.HashMap">
+    	UPDATE valvestatus SET STATUS=#{value} WHERE valve=#{sensor}
+    </update>
+    
+    
+    <insert id="insertValueHistory" parameterType="java.util.HashMap">
+		INSERT INTO valuehistory
+		SELECT
+		milisecond,
+		NOW() AS regdate,
+		ai_01,ai_02,${ai_03},ai_04,ai_05,ai_06,ai_07,ai_08,ai_09,ai_10,ai_11,ai_12,ai_13,ai_14,ai_15,ai_16,ai_17,ai_18,ai_19,ai_20
+		FROM valuehistory a WHERE regdate=(SELECT MAX(regdate) FROM valuehistory)
+	</insert>
+
+</mapper>
