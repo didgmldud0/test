@@ -20,5 +20,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ServletComponentScan
 public class App {
-fdsfdsfsdfds
+    public static void main(String[] args) {
+//    	System.setProperty("spring.devtools.restart.enabled", "false");
+//    	System.setProperty("spring.profiles.active", "dev");
+    	SpringApplication application = new SpringApplication(App.class);
+    	application.addListeners(new ApplicationPidFileWriter());
+    	application.run(args);
+//        SpringApplication.run(App.class, args);
+    	
+    }
 }
