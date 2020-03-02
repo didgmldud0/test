@@ -20,31 +20,5 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ServletComponentScan
 public class App {
- 
-    public static void main(String[] args) {
-//    	System.setProperty("spring.devtools.restart.enabled", "false");
-//    	System.setProperty("spring.profiles.active", "dev");
-    	SpringApplication application = new SpringApplication(App.class);
-    	application.addListeners(new ApplicationPidFileWriter());
-    	application.run(args);
-//        SpringApplication.run(App.class, args);
-    	
-    }
-    
-    @Bean
-    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception{
-        SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource);
-        
-        Resource[] res = new PathMatchingResourcePatternResolver().getResources("classpath:mappers/*.xml");
-        sessionFactory.setMapperLocations(res);
-        
-        return sessionFactory.getObject();
-    }
-    
-    @Bean
-    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws Exception {
-      final SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(sqlSessionFactory);
-      return sqlSessionTemplate;
-    }
+fdsfdsfsdfds
 }
