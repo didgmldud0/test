@@ -53,40 +53,6 @@ public class DaemonListener implements ServletContextListener, Runnable
             thread.start();
         }
         
-    	// 시뮬레이터
-//        new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				while(true){
-//					try {
-//						HashMap<String,Object> controlData = simulMapper.selectControlData();
-//						if(controlData!=null){
-//							int value=(int) controlData.get("value");
-//							controlData.put("value", value);
-//							simulMapper.updateValvestatus(controlData);
-//							simulMapper.deleteControlData(controlData);
-//						}
-//						HashMap<String, Object> bvalveMap = mainMapper.selectValve("b_valve");
-//						if(bvalveMap!=null){
-//							int bvalve = (int) bvalveMap.get("status");
-//							if(bvalve==0){
-//								HashMap<String,Object> param=new HashMap<>();
-//								param.put("ai_03", "ai_03-1");
-//								simulMapper.insertValueHistory(param);
-//							}else if(bvalve==1){
-//								HashMap<String,Object> param=new HashMap<>();
-//								param.put("ai_03", "ai_03+1");
-//								simulMapper.insertValueHistory(param);
-//							}
-//						}
-//						Thread.sleep(2500);
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			}
-//		}).start();
-        
     	// 이벤트로그 전송
         new Thread(new Runnable() {
 			@Override
