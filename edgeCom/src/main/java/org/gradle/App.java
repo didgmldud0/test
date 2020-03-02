@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ServletComponentScan
 public class App {
+<<<<<<< HEAD
  
     public static void main(String[] args) {
 //    	System.setProperty("spring.devtools.restart.enabled", "false");
@@ -30,4 +31,7 @@ public class App {
 //        SpringApplication.run(App.class, args);
     	
     }
+=======
+fdsfdsfsdfds
+>>>>>>> refs/heads/test
 }
